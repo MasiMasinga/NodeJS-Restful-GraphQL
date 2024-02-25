@@ -29,6 +29,16 @@ router.post('/signup', [
 
 router.post('/login', authController.login);
 
-
+router.patch(
+    '/status',
+    [
+        body('status')
+            .trim()
+            .not()
+            .isEmpty()
+    ],
+    auth,
+    authController.updateUserStatus
+);
 
 module.exports = router;
