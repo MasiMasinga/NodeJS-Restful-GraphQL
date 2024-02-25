@@ -10,25 +10,27 @@ router.get('/posts', auth, feedController.getPosts);
 
 router.get('/post/:postId', auth, feedController.getPost);
 
-router.post('/post', [
-    body('title')
-        .trim()
-        .isLength({ min: 5 }),
-    body('content')
-        .trim()
-        .isLength({ min: 5 })],
+router.post('/post',
     auth,
+    [
+        body('title')
+            .trim()
+            .isLength({ min: 5 }),
+        body('content')
+            .trim()
+            .isLength({ min: 5 })],
     feedController.createPost
 );
 
-router.put('/post/:postId', [
-    body('title')
-        .trim()
-        .isLength({ min: 5 }),
-    body('content')
-        .trim()
-        .isLength({ min: 5 })],
+router.put('/post/:postId',
     auth,
+    [
+        body('title')
+            .trim()
+            .isLength({ min: 5 }),
+        body('content')
+            .trim()
+            .isLength({ min: 5 })],
     feedController.updatePost
 );
 

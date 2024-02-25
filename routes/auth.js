@@ -32,13 +32,13 @@ router.post('/login', authController.login);
 
 router.patch(
     '/status',
+    auth,
     [
         body('status')
             .trim()
             .not()
             .isEmpty()
     ],
-    auth,
     authController.updateUserStatus
 );
 
