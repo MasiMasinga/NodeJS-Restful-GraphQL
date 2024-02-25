@@ -27,6 +27,7 @@ const fileFilter = (_req, file, cb) => {
 };
 
 const feedRoutes = require('./routes/feed');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use((_req, res, next) => {
     next();
 });
 app.use('/feed', feedRoutes);
+app.use('/auth', authRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use((error, _req, res, _next) => {
