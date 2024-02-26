@@ -51,8 +51,12 @@ app.use((error, _req, res, _next) => {
 });
 
 mongoose.connect(process.env.MONGO_URI).then(_result => {
-    app.listen(process.env.PORT || 3000, () => {
+    const server = app.listen(process.env.PORT || 3000, () => {
         console.log(`Nodejs Restful GraphQL 🚀Server Started on PORT ${process.env.PORT}`);
+    });
+    const io = require('./socket').init(server);
+    io.on('connection', socket => {
+        console.log('Client connected');
     });
 }).catch(
     err => console.log(err)
