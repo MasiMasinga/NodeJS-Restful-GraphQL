@@ -7,22 +7,9 @@ const multer = require('multer');
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
+const authMiddleware = require('./middleware/auth');
 
 require('dotenv').config();
-
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    formatError: (err) => {
-        if (!err.originalError) {
-            return err;
-        }
-        const data = err.originalError.data;
-        const message = err.message || 'An error occurred.';
-        const code = err.originalError.code || 500;
-        return { message: message, status: code, data: data };
-    }
-});
 
 const storage = multer.diskStorage({
     destination: function (_req, _file, cb) {
@@ -67,6 +54,22 @@ app.use((error, _req, res, _next) => {
     const status = error.statusCode || 500;
     const message = error.message;
     res.status(status).json({ message: message });
+});
+
+app.use(authMiddleware);
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    formatError: (err) => {
+        if (!err.originalError) {
+            return err;
+        }
+        const data = err.originalError.data;
+        const message = err.message || 'An error occurred.';
+        const code = err.originalError.code || 500;
+        return { message: message, status: code, data: data };
+    }
 });
 
 async function startApolloServer() {
