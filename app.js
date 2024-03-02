@@ -56,6 +56,21 @@ app.use((error, _req, res, _next) => {
     res.status(status).json({ message: message });
 });
 
+app.put('/post-image', (req, res, _next) => {
+    if (!req.isAuth) {
+        const error = new Error('Not authenticated!');
+        error.code = 401;
+        throw error;
+    };
+    if (!req.file) {
+        return res.status(200).json({ message: 'No file provided!' });
+    };
+    if (req.body.oldPath) {
+        clearImage(req.body.oldPath);
+    };
+    return res.status(201).json({ message: 'File stored.', filePath: req.file.path });
+})
+
 app.use(authMiddleware);
 
 const server = new ApolloServer({

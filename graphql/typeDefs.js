@@ -26,6 +26,11 @@ const typeDefs = gql`
         token: String!
     }
 
+    type PostData {
+        posts: [Post!]!
+        totalPosts: Int!
+    }
+
     input UserInputData {
         email: String!
         name: String!
@@ -40,11 +45,17 @@ const typeDefs = gql`
 
     type Query {
         login(email: String!, password: String!): AuthData!
+        posts(page: Int): PostData!
+        post(id: ID!): Post!
+        user: User!
     }
     
     type Mutation {
         createUser(userInput: UserInputData): User!
         createPost(postInput: PostInputData): Post!
+        updatePost(id: ID!, postInput: PostInputData): Post!
+        deletePost(id: ID!): Boolean
+        updateStatus(status: String!): User!
     }
 `;
 
